@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectCreationStatistics {
 
+	private static final Period MONTHLY = Period.ofMonths(1);
+
 	private final RestHighLevelClient client;
 
 	public ProjectCreationStatistics(RestHighLevelClient client) {
@@ -34,9 +36,23 @@ public class ProjectCreationStatistics {
 	 * Return the number of projects including the specified {@code dependency} over
 	 * the specified period.
 	 * @param dependency the id of the dependency
+	 * @param year the year
+	 * @param month the month of year
+	 * @return the number of projects created with the specified dependency for the
+	 * specified month
+	 * @throws IOException if the backend failed to respond
+	 */
+	public long getMonthlyProjectCreationCount(String dependency, int year, int month) throws IOException {
+		return getProjectCreationCount(dependency, LocalDate.of(year, month, 1), MONTHLY);
+	}
+
+	/**
+	 * Return the number of projects including the specified {@code dependency} over
+	 * the specified period.
+	 * @param dependency the id of the dependency
 	 * @param start the start period
 	 * @param period the period to cover
-	 * @return the downloads starting at the specified {@code start} date for the
+	 * @return the number of projects created at the specified {@code start} date for the
 	 * specified {@code period}
 	 * @throws IOException if the backend failed to respond
 	 */

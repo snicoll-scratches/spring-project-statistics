@@ -26,10 +26,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class MavenCentralStatistics {
 
+	private static final Period MONTHLY = Period.ofMonths(1);
+
 	private final RestHighLevelClient client;
 
 	public MavenCentralStatistics(RestHighLevelClient client) {
 		this.client = client;
+	}
+
+
+	/**
+	 * Return the downloads count for the specified module of the specified project and
+	 * the specified month
+	 * @param projectId the id of the project
+	 * @param artifactId the id of the module
+	 * @param year the year
+	 * @param month the month of year
+	 * @return the downloads of the specified module for the specified month
+	 * @throws IOException if the backend failed to respond
+	 */
+	public long getMonthlyDownloadCount(String projectId, String artifactId, int year, int month) throws IOException {
+		return getDownloadCount(projectId, artifactId, LocalDate.of(year, month, 1), MONTHLY);
 	}
 
 	/**
