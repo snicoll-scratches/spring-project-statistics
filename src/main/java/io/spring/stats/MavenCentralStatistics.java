@@ -34,7 +34,6 @@ public class MavenCentralStatistics {
 		this.client = client;
 	}
 
-
 	/**
 	 * Return the downloads count for the specified module of the specified project and
 	 * the specified month
@@ -60,12 +59,12 @@ public class MavenCentralStatistics {
 	 * specified {@code period}
 	 * @throws IOException if the backend failed to respond
 	 */
-	public long getDownloadCount(String projectId, String artifactId, LocalDate start, Period period) throws IOException {
+	public long getDownloadCount(String projectId, String artifactId, LocalDate start, Period period)
+			throws IOException {
 		long startTimestamp = toEpoch(start.withDayOfMonth(1));
 		long endTimestamp = toEpoch(start.plus(period));
 		SearchRequest searchRequest = new SearchRequest("downloads");
-		searchRequest.source(new SearchSourceBuilder()
-				.query(query(projectId, artifactId, startTimestamp, endTimestamp))
+		searchRequest.source(new SearchSourceBuilder().query(query(projectId, artifactId, startTimestamp, endTimestamp))
 				.aggregation(AggregationBuilders.sum("downloads").field("count")));
 		SearchResponse response = this.client.search(searchRequest, RequestOptions.DEFAULT);
 		ParsedSum downloads = response.getAggregations().get("downloads");
@@ -75,8 +74,7 @@ public class MavenCentralStatistics {
 	private QueryBuilder query(String projectId, String artifactId, long from, long to) {
 		return QueryBuilders.boolQuery().filter(new MatchQueryBuilder("projectId", projectId))
 				.filter(new MatchQueryBuilder("artifactId", artifactId))
-				.filter(QueryBuilders.rangeQuery("from").gte(from))
-				.filter(QueryBuilders.rangeQuery("to").lt(to));
+				.filter(QueryBuilders.rangeQuery("from").gte(from)).filter(QueryBuilders.rangeQuery("to").lt(to));
 
 	}
 

@@ -33,8 +33,8 @@ public class ProjectCreationStatistics {
 	}
 
 	/**
-	 * Return the number of projects including the specified {@code dependency} over
-	 * the specified period.
+	 * Return the number of projects including the specified {@code dependency} over the
+	 * specified period.
 	 * @param dependency the id of the dependency
 	 * @param year the year
 	 * @param month the month of year
@@ -47,8 +47,8 @@ public class ProjectCreationStatistics {
 	}
 
 	/**
-	 * Return the number of projects including the specified {@code dependency} over
-	 * the specified period.
+	 * Return the number of projects including the specified {@code dependency} over the
+	 * specified period.
 	 * @param dependency the id of the dependency
 	 * @param start the start period
 	 * @param period the period to cover
@@ -60,15 +60,13 @@ public class ProjectCreationStatistics {
 		long startTimestamp = toEpoch(start);
 		long endTimestamp = toEpoch(start.plus(period));
 		CountRequest countRequest = new CountRequest("initializr");
-		countRequest.source(new SearchSourceBuilder()
-				.query(query(dependency, startTimestamp, endTimestamp)));
+		countRequest.source(new SearchSourceBuilder().query(query(dependency, startTimestamp, endTimestamp)));
 		CountResponse count = this.client.count(countRequest, RequestOptions.DEFAULT);
 		return count.getCount();
 	}
 
 	private QueryBuilder query(String dependency, long from, long to) {
-		return QueryBuilders.boolQuery()
-				.filter(new MatchQueryBuilder("dependencies.values", dependency))
+		return QueryBuilders.boolQuery().filter(new MatchQueryBuilder("dependencies.values", dependency))
 				.filter(QueryBuilders.rangeQuery("generationTimestamp").gte(from).lt(to));
 
 	}
@@ -76,4 +74,5 @@ public class ProjectCreationStatistics {
 	private static long toEpoch(LocalDate time) {
 		return time.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli();
 	}
+
 }

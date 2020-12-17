@@ -19,11 +19,13 @@ public class SampleApplication {
 			int year = 2020;
 			System.out.println("Maven Central statistics for Spring Batch (spring-batch-core):");
 			for (int month = 1; month <= 12; month++) {
-				System.out.printf("%s-%02d - %s%n", year, month, mavenCentralStatistics.getMonthlyDownloadCount("spring-batch", "spring-batch-core", year, month));
+				System.out.printf("%s-%02d - %s%n", year, month, mavenCentralStatistics
+						.getMonthlyDownloadCount("spring-batch", "spring-batch-core", year, month));
 			}
 			System.out.println("Project Generation statistics for Spring Batch:");
 			for (int month = 1; month <= 12; month++) {
-				System.out.printf("%s-%02d - %s%n", year, month, projectCreationStatistics.getMonthlyProjectCreationCount("batch", year, month));
+				System.out.printf("%s-%02d - %s%n", year, month,
+						projectCreationStatistics.getMonthlyProjectCreationCount("batch", year, month));
 			}
 		};
 	}
