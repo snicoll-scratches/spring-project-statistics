@@ -12,7 +12,6 @@ import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import org.springframework.stereotype.Component;
 
@@ -60,7 +59,7 @@ public class ProjectCreationStatistics {
 		long startTimestamp = toEpoch(start);
 		long endTimestamp = toEpoch(start.plus(period));
 		CountRequest countRequest = new CountRequest("initializr");
-		countRequest.source(new SearchSourceBuilder().query(query(dependency, startTimestamp, endTimestamp)));
+		countRequest.query(query(dependency, startTimestamp, endTimestamp));
 		CountResponse count = this.client.count(countRequest, RequestOptions.DEFAULT);
 		return count.getCount();
 	}
