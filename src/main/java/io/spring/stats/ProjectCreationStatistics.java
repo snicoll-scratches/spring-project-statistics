@@ -58,7 +58,7 @@ public class ProjectCreationStatistics {
 	public long getProjectCreationCount(String dependency, LocalDate start, Period period) throws IOException {
 		long startTimestamp = toEpoch(start);
 		long endTimestamp = toEpoch(start.plus(period));
-		CountRequest countRequest = new CountRequest("initializr");
+		CountRequest countRequest = new CountRequest("initializr-archive");
 		countRequest.query(query(dependency, startTimestamp, endTimestamp));
 		CountResponse count = this.client.count(countRequest, RequestOptions.DEFAULT);
 		return count.getCount();
