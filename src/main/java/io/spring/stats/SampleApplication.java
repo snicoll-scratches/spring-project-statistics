@@ -16,16 +16,16 @@ public class SampleApplication {
 	public ApplicationRunner statisticsRunner(MavenCentralStatistics mavenCentralStatistics,
 			ProjectCreationStatistics projectCreationStatistics) {
 		return args -> {
-			String projectId = "spring-batch";
+			String groupId = "org.springframework.batch";
 			String artifactId = "spring-batch-core";
 			String dependencyId = "batch";
 			int year = 2020;
-			System.out.printf("Maven Central statistics for %s (%s):%n", projectId, artifactId);
+			System.out.printf("Maven Central statistics for '%s:%s':%n", groupId, artifactId);
 			for (int month = 1; month <= 12; month++) {
 				System.out.printf("%s-%02d - %s%n", year, month,
-						mavenCentralStatistics.getMonthlyDownloadCount(projectId, artifactId, year, month));
+						mavenCentralStatistics.getMonthlyDownloadCount(groupId, artifactId, year, month));
 			}
-			System.out.printf("Project Generation statistics for %s (%s):%n", projectId, dependencyId);
+			System.out.printf("start.spring.io generation statistics for projects with entry '%s':%n", dependencyId);
 			for (int month = 1; month <= 12; month++) {
 				System.out.printf("%s-%02d - %s%n", year, month,
 						projectCreationStatistics.getMonthlyProjectCreationCount(dependencyId, year, month));

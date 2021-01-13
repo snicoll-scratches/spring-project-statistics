@@ -35,44 +35,41 @@ public class MavenCentralStatistics {
 	}
 
 	/**
-	 * Return the downloads count for the specified module of the specified project and
-	 * the specified month
-	 * @param projectId the id of the project
-	 * @param artifactId the id of the module
+	 * Return the downloads count for the specified module and the specified month
+	 * @param groupId the groupId of the module
+	 * @param artifactId the artifactId of the module
 	 * @param year the year
 	 * @param month the month of year
 	 * @return the downloads of the specified module for the specified month
 	 * @throws IOException if the backend failed to respond
 	 */
-	public long getMonthlyDownloadCount(String projectId, String artifactId, int year, int month) throws IOException {
-		return getDownloadCount(projectId, artifactId, LocalDate.of(year, month, 1), MONTHLY);
+	public long getMonthlyDownloadCount(String groupId, String artifactId, int year, int month) throws IOException {
+		return getDownloadCount(groupId, artifactId, LocalDate.of(year, month, 1), MONTHLY);
 	}
 
 	/**
-	 * Return the downloads count for the specified module of the specified project over
-	 * the specified period.
-	 * @param projectId the id of the project
-	 * @param artifactId the id of the module
+	 * Return the downloads count for the specified module over the specified period.
+	 * @param groupId the groupId of the module
+	 * @param artifactId the artifactId of the module
 	 * @param start the start period (always the first day of the month)
 	 * @param period the period to cover
 	 * @return the downloads starting at the specified {@code start} date for the
 	 * specified {@code period}
 	 * @throws IOException if the backend failed to respond
 	 */
-	public long getDownloadCount(String projectId, String artifactId, LocalDate start, Period period)
-			throws IOException {
+	public long getDownloadCount(String groupId, String artifactId, LocalDate start, Period period) throws IOException {
 		long startTimestamp = toEpoch(start.withDayOfMonth(1));
 		long endTimestamp = toEpoch(start.plus(period));
 		SearchRequest searchRequest = new SearchRequest("downloads");
-		searchRequest.source(new SearchSourceBuilder().query(query(projectId, artifactId, startTimestamp, endTimestamp))
+		searchRequest.source(new SearchSourceBuilder().query(query(groupId, artifactId, startTimestamp, endTimestamp))
 				.aggregation(AggregationBuilders.sum("downloads").field("count")));
 		SearchResponse response = this.client.search(searchRequest, RequestOptions.DEFAULT);
 		ParsedSum downloads = response.getAggregations().get("downloads");
 		return (long) downloads.getValue();
 	}
 
-	private QueryBuilder query(String projectId, String artifactId, long from, long to) {
-		return QueryBuilders.boolQuery().filter(new MatchQueryBuilder("projectId", projectId))
+	private QueryBuilder query(String groupId, String artifactId, long from, long to) {
+		return QueryBuilders.boolQuery().filter(new MatchQueryBuilder("groupId", groupId))
 				.filter(new MatchQueryBuilder("artifactId", artifactId))
 				.filter(QueryBuilders.rangeQuery("from").gte(from)).filter(QueryBuilders.rangeQuery("to").lt(to));
 
