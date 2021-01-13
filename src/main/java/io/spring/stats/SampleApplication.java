@@ -16,9 +16,14 @@ public class SampleApplication {
 	public ApplicationRunner statisticsRunner(MavenCentralStatistics mavenCentralStatistics,
 			ProjectCreationStatistics projectCreationStatistics) {
 		return args -> {
+			// gav coordinates of the module to consider for Maven Central Stats
 			String groupId = "org.springframework.batch";
 			String artifactId = "spring-batch-core";
+
+			// dependency id of an entry on start.spring.io
+			// curl https://start.spring.io provides a table of available dependency ids.
 			String dependencyId = "batch";
+
 			int year = 2020;
 			System.out.printf("Maven Central statistics for '%s:%s':%n", groupId, artifactId);
 			for (int month = 1; month <= 12; month++) {
