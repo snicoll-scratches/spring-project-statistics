@@ -3,18 +3,33 @@ package io.spring.stats;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * Configuration properties for project statistics runner.
+ *
  * @author Simon Baslé
  */
 @ConfigurationProperties(prefix = "stats")
 public class StatsProperties {
 
+	/**
+	 * GroupId of the module to consider for Maven Central downloads.
+	 */
 	private String groupId;
 
+	/**
+	 * ArtifactId of the module to consider for Maven Central downloads.
+	 */
 	private String artifactId;
 
+	/**
+	 * Dependency id of an entry on start.spring.io to consider for project generation
+	 * statistics.
+	 */
 	private String dependencyId;
 
-	private int year;
+	/**
+	 * Year to use.
+	 */
+	private int year = 2020;
 
 	public String getGroupId() {
 		return groupId;
